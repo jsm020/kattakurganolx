@@ -1,0 +1,72 @@
+# Texnik topshiriq: OLX Kattaqo‘rg‘on e’lonlarini Telegram kanalga yuboruvchi bot
+
+## Maqsad
+OLX.uz saytining Kattaqo‘rg‘on bo‘limidagi yangi e’lonlarni avtomatik tarzda kuzatib borish, filterlash va maxsus Telegram kanalga yuborish uchun Python va Django asosida bot yaratish.
+
+---
+
+## Talablar
+
+### Platforma va Texnologiyalar
+- Python 3.x
+- Django (asosiy backend va monitoring uchun)
+- BeautifulSoup (bs4) va requests kutubxonalari orqali OLX sahifasini scraping qilish
+- python-telegram-bot (yoki aiogram) orqali Telegram bilan ishlash
+
+---
+
+## Loyiha bosqichlari
+
+### 1. Muhit va Kutubxonalarni O‘rnatish
+- Django, requests, beautifulsoup4, python-telegram-bot (yoki aiogram) kutubxonalarini o‘rnatish
+
+### 2. Django Loyihasini Yaratish
+- E’lonlar uchun model yaratish:  
+  - title (CharField)  
+  - price (CharField yoki DecimalField)  
+  - location (CharField)  
+  - link (URLField)  
+  - image (URLField, ixtiyoriy)  
+  - is_sent (BooleanField)  
+  - created_at (DateTimeField)
+- Django admin panel orqali monitoring imkoniyati
+
+### 3. Scraper Modulini Yozish
+- OLX.uz saytining https://www.olx.uz/kattakurgan/ sahifasidan e’lonlarni olish
+- Har bir e’lon uchun: sarlavha, narx, joylashuv, havola va rasm linkini ajratib olish
+- Faqat Kattaqo‘rg‘onga oid e’lonlarni location/description bo‘yicha filterlash
+- User-Agent header ishlatish (scraping bloklanmasligi uchun)
+- Yangi e’lonlarni Django bazasiga saqlash
+
+### 4. Telegram Botini Yozish
+- Django ORM orqali is_sent = False bo‘lgan yangi e’lonlarni olish va Telegram kanalga yuborish
+- Xabar formati: sarlavha, narx, joylashuv, havola, rasm (agar mavjud bo‘lsa)
+- Xabar yuborilgandan so‘ng e’lonni is_sent = True qilib belgilash
+- Xatoliklarni logga yoki admin Telegram kanaliga yuborish
+
+### 5. Ishlash Sikli va Avtomatlashtirish
+- Django management command yoki Celery yordamida scraper va botni periodik (10-30 daqiqada bir marta) ishga tushirish
+- Faqat yangi e’lonlar yuboriladi (takrorlanmaslik uchun monitoring)
+
+### 6. Qo‘shimcha Imkoniyatlar
+- Admin uchun statistikani ko‘rsatish (umumiy e’lonlar soni, so‘nggi yuborilganlar va h.k.)
+- Boshqa shaharlar uchun kengaytirish imkoniyati
+- Xatoliklarni logga yoki admin kanalga yuborish
+
+---
+
+## Asosiy Funksiya (Promt ko‘rinishida)
+
+> OLX.uz Kattaqo‘rg‘on bo‘limidan yangi e’lonlarni (title, price, location, link, image) scraping qiladigan, faqat Kattaqo‘rg‘onga tegishli e’lonlarni filterlab, Django bazasiga saqlaydigan va Telegram kanalga yuboradigan Python bot yozing. Takror yuborilmasligi uchun e’lonlarni monitoring qilib boring, kod toza va modulli bo‘lsin.
+
+---
+
+## Qo‘shimcha Talablar
+- User-Agent header ishlatish, scraping bloklanmasligi uchun
+- Xatoliklar bo‘lsa, logga yozish yoki admin telegramga xabar berish
+- Kengaytirish uchun kod toza, modulli bo‘lishi kerak
+
+---
+
+## Qo‘shimcha
+Agar kerak bo‘lsa, admin uchun statistikani ko‘rsatish yoki boshqa shaharlar uchun kengaytirish imkoniyati ham bo‘lishi mumkin.
